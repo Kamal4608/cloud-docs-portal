@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Zabbix Installation Guide</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+  <img src="../../images/zabbix.png" class="tool-logo" alt="Zabbix Logo">
+  <h1>Zabbix Monitoring Documentation</h1>
+  <p>Step-by-step installation guide for Azure VM (Documentation Only)</p>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+<div class="section">
+  <h2>📄 Document Details</h2>
+
+  <div class="icon-row">
+
+    <div class="icon-box">
+      <img src="../../images/zabbix.png">
+      <span><b>Tool:</b> Zabbix Monitoring</span>
+    </div>
+
+    <div class="icon-box">
+      <img src="../../images/ubuntu.png">
+      <span><b>OS:</b> Ubuntu 22.04 LTS</span>
+    </div>
+
+    <div class="icon-box">
+      <img src="../../images/azure.png">
+      <span><b>Cloud:</b> Microsoft Azure</span>
+    </div>
+
+    <div class="icon-box">
+      <img src="../../images/putty.png">
+      <span><b>Access:</b> PuTTY (SSH)</span>
+    </div>
+
+  </div>
+
+  <p style="margin-top:15px;"><b>Added by:</b> Kamalesh</p>
+</div>
+
+
+  <div class="section">
+    <h2>1️⃣ Prerequisites</h2>
+    <ul>
+      <li>Azure Account</li>
+      <li>Ubuntu 22.04 Virtual Machine</li>
+      <li>PuTTY installed on Windows</li>
+      <li>Ports 22 (SSH) and 80 (HTTP) allowed in NSG</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>2️⃣ Azure VM Creation (Documentation)</h2>
+
+    <h3>2.1 Create Resource Group</h3>
+    <ol>
+      <li>Login to Azure Portal</li>
+      <li>Search <b>Resource Groups</b></li>
+      <li>Click <b>Create</b></li>
+      <li>Name: <code>zabbix-rg</code></li>
+      <li>Select Region</li>
+    </ol>
+
+    <h3>2.2 Create Virtual Machine</h3>
+    <ul>
+      <li>VM Name: <code>zabbix-vm</code></li>
+      <li>Image: Ubuntu 22.04 LTS</li>
+      <li>Size: Standard B2s</li>
+      <li>Authentication: SSH Key</li>
+      <li>Inbound Ports: 22, 80</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3️⃣ Connect to VM Using PuTTY</h2>
+    <pre>
+Host Name: azureuser@&lt;VM-Public-IP&gt;
+Port: 22
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>4️⃣ System Update Commands</h2>
+    <pre>
+sudo apt update
+sudo apt upgrade -y
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>5️⃣ Install Zabbix Repository</h2>
+    <pre>
+wget https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu22.04_all.deb
+sudo dpkg -i zabbix-release_6.4-1+ubuntu22.04_all.deb
+sudo apt update
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>6️⃣ Install Zabbix Server, Frontend & Agent</h2>
+    <pre>
+sudo apt install zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-agent -y
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>7️⃣ Database Configuration (MySQL)</h2>
+    <pre>
+sudo apt install mysql-server -y
+sudo mysql_secure_installation
+    </pre>
+
+    <h3>Create Database</h3>
+    <pre>
+CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE USER zabbix@localhost IDENTIFIED BY 'zabbixpassword';
+GRANT ALL PRIVILEGES ON zabbix.* TO zabbix@localhost;
+FLUSH PRIVILEGES;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>8️⃣ Import Zabbix Schema</h2>
+    <pre>
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -u zabbix -p zabbix
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>9️⃣ Zabbix Server Configuration</h2>
+    <pre>
+sudo vim /etc/zabbix/zabbix_server.conf
+
+DBPassword=zabbixpassword
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>🔟 Start Services</h2>
+    <pre>
+sudo systemctl restart zabbix-server zabbix-agent apache2
+sudo systemctl enable zabbix-server zabbix-agent apache2
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣1️⃣ Access Zabbix UI</h2>
+    <pre>
+http://&lt;VM-Public-IP&gt;/zabbix
+    </pre>
+
+    <ul>
+      <li>Username: <b>Admin</b></li>
+      <li>Password: <b>zabbix</b></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>✅ Notes</h2>
+    <ul>
+      <li>This page is for documentation only</li>
+      <li>Commands can be executed later</li>
+      <li>Ideal for internal knowledge base</li>
+    </ul>
+  </div>
+
+  <a href="../../index.html" class="back">⬅ Back to Home</a>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2025 | Zabbix Documentation | Cloud Docs Portal
+</div>
+
+</body>
+</html>

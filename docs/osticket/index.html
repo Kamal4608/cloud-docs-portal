@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>osTicket Installation Guide</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>osTicket Ticketing Tool Documentation</h1>
+  <p>Step-by-step osTicket installation on Azure VM (Documentation Only)</p>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+
+  <div class="section">
+    <h2>📄 Document Details</h2>
+    <ul>
+      <li><b>Tool:</b> osTicket</li>
+      <li><b>Category:</b> Ticketing System</li>
+      <li><b>OS:</b> Ubuntu 22.04 LTS</li>
+      <li><b>Cloud:</b> Microsoft Azure</li>
+      <li><b>Web Server:</b> Apache</li>
+      <li><b>Added by:</b> Kamalesh A</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣ Purpose</h2>
+    <p>
+      This document provides a complete, step-by-step guide to install and configure
+      the <b>osTicket ticketing system</b> on an Azure Virtual Machine.
+      This page is intended for <b>documentation and training purposes only</b>.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>2️⃣ Prerequisites</h2>
+    <ul>
+      <li>Azure account</li>
+      <li>Ubuntu 22.04 Virtual Machine</li>
+      <li>SSH access (PuTTY)</li>
+      <li>Ports 22 (SSH) and 80 (HTTP) allowed</li>
+      <li>Internet access from VM</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3️⃣ Azure VM Creation (Overview)</h2>
+    <ul>
+      <li>Create a Resource Group</li>
+      <li>Create Ubuntu 22.04 VM</li>
+      <li>Allow inbound ports 22 and 80</li>
+      <li>Attach public IP</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>4️⃣ Connect to VM Using PuTTY</h2>
+    <pre>
+Host Name: azureuser@&lt;VM-Public-IP&gt;
+Port: 22
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>5️⃣ System Update</h2>
+    <pre>
+sudo apt update
+sudo apt upgrade -y
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>6️⃣ Install Apache, PHP & Required Modules</h2>
+    <pre>
+sudo apt install apache2 php php-cli php-common php-curl php-gd php-imap \
+php-intl php-mbstring php-mysql php-xml php-zip unzip -y
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>7️⃣ Install MySQL Database</h2>
+    <pre>
+sudo apt install mysql-server -y
+sudo mysql_secure_installation
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>8️⃣ Create osTicket Database (Documentation)</h2>
+    <pre>
+CREATE DATABASE osticket;
+CREATE USER osticket@localhost IDENTIFIED BY 'osticketpassword';
+GRANT ALL PRIVILEGES ON osticket.* TO osticket@localhost;
+FLUSH PRIVILEGES;
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>9️⃣ Download and Extract osTicket</h2>
+    <pre>
+cd /var/www/html
+sudo wget https://github.com/osTicket/osTicket/releases/download/v1.18.1/osTicket-v1.18.1.zip
+sudo unzip osTicket-v1.18.1.zip
+sudo chown -R www-data:www-data osTicket
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>🔟 Web Installation</h2>
+    <pre>
+http://&lt;VM-Public-IP&gt;/osTicket
+    </pre>
+    <p>
+      Follow the on-screen installer to configure:
+    </p>
+    <ul>
+      <li>Helpdesk name</li>
+      <li>Admin email</li>
+      <li>Database credentials</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>✅ Notes</h2>
+    <ul>
+      <li>This page is for documentation only</li>
+      <li>Commands can be executed later when required</li>
+      <li>Ideal for IT support & DevOps teams</li>
+    </ul>
+  </div>
+
+  <a href="../../index.html" class="back">⬅ Back to Home</a>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2025 | osTicket Documentation | Cloud Docs Portal
+</div>
+
+</body>
+</html>

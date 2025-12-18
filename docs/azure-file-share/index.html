@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Azure File Share (NFS) Data Copy Guide</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>Azure File Share (NFS) – Data Copy Documentation</h1>
+  <p>Step-by-step guide for configuring Azure File Share (NFS) and data copy using rsync</p>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <div class="section">
+    <h2>📄 Document Details</h2>
+    <ul>
+      <li><b>Service:</b> Azure File Share (NFS)</li>
+      <li><b>Protocol:</b> NFS v4.1</li>
+      <li><b>Use Case:</b> Data copy between Linux servers</li>
+      <li><b>Cloud:</b> Microsoft Azure</li>
+      <li><b>Added by:</b> Kamalesh A</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣ Purpose</h2>
+    <p>
+      This document explains how to create an <b>Azure File Share using NFS</b>,
+      mount it on Linux virtual machines, and perform
+      <b>data copy operations using rsync</b>.
+      This page is intended for <b>documentation and training purposes only</b>.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>2️⃣ STEP 1: Create Azure Storage Account</h2>
+    <ul>
+      <li>Select correct subscription</li>
+      <li>Create or select Resource Group</li>
+      <li>Provide unique Storage account name</li>
+      <li>Region: <b>Central India</b></li>
+      <li>Preferred storage type and performance</li>
+      <li>File share billing: <b>Provisioned V1</b></li>
+      <li>Redundancy: <b>LRS</b></li>
+    </ul>
+
+    <p><b>Advanced settings:</b> Keep default</p>
+
+    <p><b>Networking settings:</b></p>
+    <ul>
+      <li>Public network access: <b>Enable from selected virtual networks and IP addresses</b></li>
+      <li>Select the VNET where VM exists</li>
+      <li>Allow required subnets</li>
+      <li>Add your public IP for access</li>
+    </ul>
+
+    <p><b>Encryption:</b></p>
+    <ul>
+      <li>Enable support for customer-managed keys</li>
+      <li>Select: <b>All service types (Blob, Files, Tables, Queues)</b></li>
+    </ul>
+
+    <p>Review + Create → Deployment completes successfully</p>
+  </div>
+
+  <div class="section">
+    <h2>3️⃣ STEP 2: Create Azure File Share (NFS)</h2>
+    <ul>
+      <li>Navigate to Storage Account → File Shares</li>
+      <li>Create new File Share</li>
+      <li>Name: <code>eproc-data</code></li>
+      <li>Provisioned storage: <code>5120 GB</code> (as required)</li>
+      <li>Protocol: <b>NFS</b></li>
+    </ul>
+
+    <p>Review + Create the File Share</p>
+  </div>
+
+  <div class="section">
+    <h2>4️⃣ STEP 3: Obtain NFS Mount Command</h2>
+    <p>
+      Azure provides a ready-made NFS mount command in the portal.
+      This ensures correct NFS version, security options, and compatibility.
+    </p>
+    <p>
+      Select your Linux distribution and copy the generated mount command.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>5️⃣ STEP 4: Mount Azure File Share</h2>
+
+    <p><b>Install required NFS packages:</b></p>
+
+    <pre>
+curl -sSL -O https://packages.microsoft.com/config/$(source /etc/os-release && echo "$ID/$VERSION_ID")/packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install aznfs
+    </pre>
+
+    <p><b>Create mount directory:</b></p>
+
+    <pre>
+sudo mkdir -p /mnt/DATA
+    </pre>
+
+    <p><b>Mount Azure File Share using NFS:</b></p>
+
+    <pre>
+sudo mount -t aznfs eprocsapremium.file.core.windows.net:/eprocsapremium/eproc-data /mnt/DATA \
+-o vers=4,minorversion=1,sec=sys,nconnect=4
+    </pre>
+
+    <p>
+      The Azure File Share is now accessible as a local directory.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>6️⃣ STEP 5: Verify NFS Mount (On Both Servers)</h2>
+
+    <pre>
+df -h | grep DATA
+    </pre>
+
+    <p>This confirms the file share is mounted at <code>/mnt/DATA</code>.</p>
+  </div>
+
+  <div class="section">
+    <h2>7️⃣ STEP 6: Create Directory Structure (Destination Server)</h2>
+
+    <pre>
+sudo mkdir -p /mnt/DATA/icici/ICICI/Archive-old
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>8️⃣ STEP 7: Assign Ownership (Both Servers)</h2>
+
+    <pre>
+sudo chown -R azureuser:azureuser /mnt/DATA/icici/ICICI/Archive-old
+    </pre>
+
+    <p>Ownership is applied only to the working directory.</p>
+  </div>
+
+  <div class="section">
+    <h2>9️⃣ STEP 8: Verify Permissions</h2>
+
+    <pre>
+ls -ld /mnt/DATA/icici/ICICI/Archive-old
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>🔟 STEP 9: Data Copy Using rsync (Single Job)</h2>
+
+    <pre>
+nohup rsync -avz --progress -e "ssh -i /root/datacopy.pem" \
+/mnt/DATA/icici/ICICI/Archive-old/ \
+azureuser@20.33.87.69:/mnt/DATA/icici/ICICI/Archive-old/ \
+> rsync_copy_appdata.log 2>&1 &
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣1️⃣ Monitor rsync Process</h2>
+
+    <pre>
+ps -ef | grep rsync
+tail -f rsync_copy_appdata.log
+    </pre>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣2️⃣ Parallel rsync Script (Multiple Files)</h2>
+
+    <pre>
+#!/bin/bash
+
+SRC="/mnt/DATA/icici/ICICI/Archive-old"
+DEST="azureuser@20.33.87.69:/mnt/DATA/icici/ICICI/Archive-old"
+SSH_KEY="/root/datacopy.pem"
+JOBS=10
+    </pre>
+
+    <p>
+      This script copies files in parallel (10 jobs at a time),
+      logs copied files, and retries missing files.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣3️⃣ STEP 12: Validate Data (Destination Server)</h2>
+
+    <pre>
+df -h
+find /mnt/DATA/icici/ICICI/Archive-old/ -type f | wc -l
+    </pre>
+  </div>
+
+  <a href="../../index.html" class="back">⬅ Back to Home</a>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2025 | Azure File Share Documentation | Cloud Docs Portal
+</div>
+
+</body>
+</html>
