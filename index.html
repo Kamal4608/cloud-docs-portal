@@ -3,70 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <title>Cloud Documentation Portal</title>
-
-  <!-- CSS LINK (MOST IMPORTANT LINE) -->
   <link rel="stylesheet" href="css/style.css">
 
- <script>
-  function logout() {
-    sessionStorage.removeItem("loggedIn");
-    window.location.href = "login.html";
-  }
-</script>
-<script src="js/auth.js"></script>
-<script>
-  checkAuth();
-</script>
-
+  <!-- Auth logic -->
+  <script src="js/auth.js"></script>
 </head>
 
-<body>
-  <script>
-  if (sessionStorage.getItem("loggedIn") !== "true") {
-    window.location.href = "login.html";
-  }
-</script>
+<body onload="checkAuth()">
+
+<!-- Logout button -->
 <button onclick="logout()" style="position:absolute; top:20px; right:20px;">
   Logout
 </button>
 
+<div class="header">
+  <h1>Cloud Documentation Portal</h1>
+  <p>Step-by-step guide for the documentations</p>
+</div>
 
-  <div class="header">
-    <h1>Cloud Documentation Portal</h1>
-    <p>Step-by-step guide for the documentations</p>
+<div class="container">
+
+  <!-- Admin-only message -->
+  <p id="adminMsg" style="color:green; display:none;">
+    👑 Admin access enabled (edit permissions available)
+  </p>
+
+  <!-- User-only message -->
+  <p id="userMsg" style="color:orange; display:none;">
+    👤 Read-only user access
+  </p>
+
+  <div class="card-container">
+
+    <a href="docs/zabbix/index.html" class="card">
+      <h2>1. Zabbix</h2>
+      <p>Complete Zabbix installation guide on Azure VM using PuTTY.</p>
+    </a>
+
+    <a href="docs/osticket/index.html" class="card">
+      <h2>2. osTicket</h2>
+      <p>Ticketing tool setup with email integration.</p>
+    </a>
+
+    <a href="docs/azure-file-share/index.html" class="card">
+      <h2>3. Azure File Share</h2>
+      <p>Data copy, permissions & access configuration.</p>
+    </a>
+
+    <a href="docs/fortinet-vpn-troubleshoot/index.html" class="card">
+      <h2>4. Fortinet VPN</h2>
+      <p>Troubleshooting VPN connection on FortiClient</p>
+    </a>
+
   </div>
 
-  <div class="container">
+</div>
 
-    <div class="card-container">
-
-      <a href="docs/zabbix/index.html" class="card">
-        <h2>1. Zabbix</h2>
-        <p>Complete Zabbix installation guide on Azure VM using PuTTY.</p>
-      </a>
-
-      <a href="docs/osticket/index.html" class="card">
-        <h2>2. osTicket</h2>
-        <p>Ticketing tool setup with email integration.</p>
-      </a>
-
-      <a href="docs/azure-file-share/index.html" class="card">
-        <h2>3. Azure File Share</h2>
-        <p>Data copy, permissions & access configuration.</p>
-      </a>
-
-      <a href="docs/fortinet-vpn-troubleshoot/index.html" class="card">
-        <h2>4. Fortinet-vpn</h2>
-        <p>Troubleshooting vpn connection on FortiClient</p>
-      </a>
-
-    </div>
-
-  </div>
-
-  <div class="footer">
-    © 2025 | Cloud Documentation | Created by Kamalesh A
-  </div>
+<div class="footer">
+  © 2025 | Cloud Documentation | Created by Kamalesh A
+</div>
 
 </body>
 </html>
