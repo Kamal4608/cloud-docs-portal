@@ -6,9 +6,26 @@
 
   <!-- CSS LINK (MOST IMPORTANT LINE) -->
   <link rel="stylesheet" href="css/style.css">
+
+ <script>
+  function logout() {
+    sessionStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+  }
+</script>
+
 </head>
 
 <body>
+  <script>
+  if (sessionStorage.getItem("loggedIn") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+<button onclick="logout()" style="position:absolute; top:20px; right:20px;">
+  Logout
+</button>
+
 
   <div class="header">
     <h1>Cloud Documentation Portal</h1>
