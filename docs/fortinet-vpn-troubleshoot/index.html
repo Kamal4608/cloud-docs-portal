@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FortiClient VPN Troubleshooting Guide</title>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>FortiClient (Fortinet) VPN – Troubleshooting Guide</h1>
+  <p>Step-by-step guide to resolve FortiClient VPN connection issues</p>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+  <div class="section">
+    <h2>📄 Document Details</h2>
+    <ul>
+      <li><b>Product:</b> FortiClient VPN</li>
+      <li><b>Vendor:</b> Fortinet</li>
+      <li><b>Platform:</b> Windows</li>
+      <li><b>Category:</b> VPN Connectivity</li>
+      <li><b>Purpose:</b> Troubleshooting</li>
+      <li><b>Added by:</b> Kamalesh A</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>1️⃣ Attempt to Connect Normally</h2>
+    <ol>
+      <li>Open <b>FortiClient VPN</b></li>
+      <li>Enter your <b>Username</b> and <b>Password</b></li>
+      <li>Click <b>Connect</b></li>
+    </ol>
+    <p>If the VPN does not connect, proceed to the next step.</p>
+  </div>
+
+  <div class="section">
+    <h2>2️⃣ Check VPN Connection Settings</h2>
+    <ol>
+      <li>Click the <b>three horizontal lines (menu)</b> below the username field</li>
+      <li>Select <b>Edit the Selected Connection</b></li>
+      <li>Verify the following details:</li>
+    </ol>
+    <ul>
+      <li>VPN Server Address</li>
+      <li>Port Number</li>
+      <li>Connection Type (SSL/IPSec)</li>
+      <li>Authentication settings</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>3️⃣ Re-enter Your Credentials</h2>
+    <ul>
+      <li>Carefully re-type your password</li>
+      <li>Ensure CAPS LOCK is off</li>
+      <li>Attempt to connect again</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>4️⃣ Reset Network Adapter IPv4 Settings</h2>
+    <ol>
+      <li>Press <b>Windows + R</b></li>
+      <li>Type <code>ncpa.cpl</code> and press Enter</li>
+      <li>Right-click <b>Wi-Fi</b> or <b>Ethernet</b> → Properties</li>
+      <li>Select <b>Internet Protocol Version 4 (TCP/IPv4)</b></li>
+      <li>Click <b>Properties</b></li>
+      <li>Ensure the following options are selected:</li>
+    </ol>
+
+    <pre>
+Obtain an IP address automatically
+Obtain DNS server address automatically
+    </pre>
+
+    <p>Click <b>OK</b> → Close all windows.</p>
+  </div>
+
+  <div class="section">
+    <h2>5️⃣ Try Connecting Again</h2>
+    <ul>
+      <li>Open FortiClient VPN</li>
+      <li>Enter username and password</li>
+      <li>Click <b>Connect</b></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>6️⃣ Reinstall FortiClient VPN (Last Option)</h2>
+    <ol>
+      <li>Uninstall <b>FortiClient VPN</b> from Control Panel</li>
+      <li>Restart your PC</li>
+      <li>Download and install the <b>latest FortiClient VPN</b></li>
+      <li>Re-enter VPN configuration details</li>
+      <li>Try connecting again</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>✅ Notes</h2>
+    <ul>
+      <li>This guide is for troubleshooting purposes only</li>
+      <li>Contact IT support if the issue persists</li>
+      <li>Ensure internet connectivity before VPN login</li>
+    </ul>
+  </div>
+
+  <a href="../../index.html" class="back">⬅ Back to Home</a>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  © 2025 | FortiClient VPN Documentation | Cloud Docs Portal
+</div>
+
+</body>
+</html>
